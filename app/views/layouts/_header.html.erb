@@ -1,0 +1,59 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+  <%=link_to image_tag( 'logo/bibimbapp-dark.png', id:"logo", class: "img-responsive", alt: ""), user_signed_in? ? lessons_path : root_path  %>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fa fa-bars fa-2" style=""></span>
+  </button>
+
+
+  <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+    <ul class="navbar-nav m-auto">
+
+      <li class="nav-item ">
+        <%= link_to 'Courses', lessons_path, class: "nav-link" %>
+      </li>
+      <li class="nav-item ">
+        <%= link_to 'Vocabulary', vocabularies_path, class: "nav-link" %>
+      </li>
+      <li class="nav-item ">
+        <%= link_to 'Forum', thredded_path, target: "_blank", class: "nav-link" %>
+      </li>
+      <li class="nav-item ">
+      <% if user_signed_in? %>
+        <%= link_to 'My stats', user_path(current_user.id), class: "nav-link" %>
+      <%end%>
+      </li>
+
+    </ul>
+
+    <div class="dropdown" style="padding-right: 20px">
+      <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <% if user_signed_in? && current_user.avatar != nil %>
+        <%= image_tag(current_user.avatar , alt: 'avatar', height: 50, width: 50, class: 'rounded-circle') if current_user.avatar.attached?  %>
+        <%= current_user.first_name %> <%= current_user.last_name %>
+        <% elsif user_signed_in? %>
+        <%= current_user.first_name %> <%= current_user.last_name %>
+        <%else%>
+        Sign in/Sign up
+        <% end %>
+      </button>
+
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <% if user_signed_in? %>
+          <% if user_signed_in? && current_user.is_admin? %>
+            <%= link_to 'Administration', admin_root_path, class: "dropdown-item text-danger", target: "_blank" %>
+          <div class="dropdown-divider" role="presentation"></div>
+          <% end %>
+          <%= link_to 'Profile', user_path(current_user.id), class: "dropdown-item" %>
+          <div class="dropdown-divider" role="presentation"></div>
+          <%= link_to 'Logout', destroy_user_session_path, class: "dropdown-item" %>
+        <% else %>
+          <%= link_to 'Sign up', new_user_registration_path, class: "dropdown-item" %>
+          <%= link_to 'Login', new_user_session_path, class: "dropdown-item" %>
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+
+</nav>

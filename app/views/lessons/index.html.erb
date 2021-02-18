@@ -1,0 +1,71 @@
+<div class="section-title section-title--style-2 text-center mb-4">
+  <h3 class="section-title-inner heading-2 strong-400">
+    <span>My Courses</span>
+  </h3>
+  <section class="slice sct-color-1">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="text-center">
+            <div class="heading heading-2 strong-600 line-height-1_8">
+              Are you ready to improve your French ?
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHOISIR AFFICHAGE NIVEAU -->
+
+<%= javascript_include_tag 'level_buttons'%>
+
+  <section class="sct-color-1">
+    <div class="container">
+      <div class="masonry-filter-menu link-menu link-menu--style-3 text-center">
+        <%= link_to "Show all", 'javascript:;', id: "levelAll", class: 'btn-filter default' %>
+        <% @levels.each do |level| %>
+        <%= link_to "#{level.niveau} #{level.level_description}", 'javascript:;', id: "level#{level.niveau}" ,class: 'btn-filter' %>
+        <% end %>
+       </div>
+     </div>
+
+     <div class="container mt-5">
+      <span class="delimiter delimiter--style-1"></span>
+    </div>
+  </section>
+
+  <% @levels.order(niveau: :asc).each do |current_level| %>
+  <% lessons_array = @lessons.select {|lesson| lesson.level == current_level} %>
+  <div class="level<%= current_level.niveau %>">
+    <div class="col-wrapper--spaced text-center animate-on-scroll fadeInDown">
+      <div class="btn btn-base-4" style="pointer-events: none"><%= current_level.niveau %> <%= current_level.level_description %></div>
+    </div>
+    <section class="sct-color-1" id="sct_timeline" data-cat="level<%= current_level.niveau %>">
+      <div class="container">
+        <div class="timeline">
+          <% lessons_array.each do |lesson| %>
+          <div class="timeline-block">
+            <span class="timeline-img"></span>
+            <div class="timeline-content border-0">
+
+              <div class="icon-block icon-block--style-2-v2 text-center">
+                <%=  link_to lesson_path(lesson.id) do %>
+                  <div class='block-icon rounded'>
+                    <i class='<%= lesson.icone%>'> </i>
+                  </div>
+                  <div class="row justify-content-center">
+                  <h2 class="heading heading-6 strong-600 col-6"><%= lesson.title %></h2>
+                  </div>
+                <% end %>
+                <p class="px-2">
+                </p>
+              </div>
+            </div>
+          </div>
+          <% end %>
+        </div>
+      </div>
+    </section>
+  </div>
+  <% end %>
